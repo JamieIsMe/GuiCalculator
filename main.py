@@ -66,7 +66,7 @@ def setup_button(number):
 if __name__ == "__main__":
     gui = tk.Tk()
     gui.title("Calculator App")
-    gui.geometry("250x300")
+    gui.geometry("265x300")
     gui.resizable(False, False)
     display_text = ""
     label_display = tk.Label(gui)
@@ -93,6 +93,7 @@ if __name__ == "__main__":
     button_subtract = setup_button("-")
     button_addition = setup_button("+")
     button_clear = setup_button("C")
+    button_temp = setup_button("+/-")
 
     button_zero.place(x=10, y=230)
     button_one.place(x=10, y=170)
@@ -106,11 +107,12 @@ if __name__ == "__main__":
     button_nine.place(x=110, y=50)
     label_display.grid(row=0, column=0)
 
-    button_equal.place(x=160, y=230)
+    button_equal.place(x=210, y=230)
     button_divide.place(x=160, y=110)
     button_multipy.place(x=160, y=170)
     button_subtract.place(x=110, y=230)
     button_addition.place(x=60, y=230)
     button_clear.place(x=160, y=50)
+    button_temp.place(x=160, y=230)
 
     gui.mainloop()
