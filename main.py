@@ -9,7 +9,11 @@ def add_character(character):
     global status
     global operation
     global result
-    display_text += character
+    global switch1
+    global switch2
+
+    if character != "+/-":
+        display_text += character
     if character.isnumeric() and status:
         if result != "":
             clear_calulator()
@@ -17,7 +21,7 @@ def add_character(character):
         num_one += character
     elif character.isnumeric() and not status:
         num_two += character
-    elif operation == "":
+    elif operation == "" and character != "+/-":
         if result != "":
             num_one = result
             display_text = num_one+character
@@ -26,23 +30,41 @@ def add_character(character):
         status = False
     if character == "=":
         if operation == "-":
-            result = str(float(num_one) - float(num_two))
+            result = str((float(num_one)*switch1) - (float(num_two)*switch2))
             display_text += result
         elif operation == "+":
-            result = str(float(num_one) + float(num_two))
+            result = str((float(num_one)*switch1) + (float(num_two)*switch2))
             display_text += result
         elif operation == "*":
-            result = str(float(num_one) * float(num_two))
+            result = str((float(num_one)*switch1) * (float(num_two)*switch2))
             display_text += result
         elif operation == "/":
-            result = str(float(num_one) / float(num_two))
+            result = str((float(num_one)*switch1) / (float(num_two)*switch2))
             display_text += result
         num_one = ""
         num_two = ""
         operation = ""
+        switch1 = 1
+        switch2 = 1
         status = True
     elif character == "C":
         clear_calulator()
+    if character == "+/-" and status:
+        switch1 *= -1
+        character = "-" if switch1 == -1 else "+"
+        if display_text[0] in "+-":
+            display_text = character + display_text[1::]
+        else:
+            display_text = character + display_text
+    elif character == "+/-" and not status:
+        switch2 *= -1
+        character = "-" if switch2 == -1 else "+"
+        minus_loaction = display_text.rfind("-")
+        positive_location = display_text.rfind("+")
+        multiply_location = display_text.rfind("*")
+        divide_location = display_text.rfind("/")
+        location = max(minus_loaction, positive_location, multiply_location, divide_location)
+        display_text = display_text[:location+1] + character + display_text[location+1:]
     label_display.config(text=display_text)
 
 def clear_calulator():
@@ -52,11 +74,15 @@ def clear_calulator():
     global status
     global operation
     global result
+    global switch1
+    global switch2
     display_text = ""
     num_one = ""
     num_two = ""
     operation = ""
     result = ""
+    switch1 = 1
+    switch2 = 1
     status = True
     label_display.config(text=display_text)
 
@@ -76,6 +102,8 @@ if __name__ == "__main__":
     num_two = ""
     status = True
     result = ""
+    switch1 = 1
+    switch2 = 1
 
     button_zero = setup_button("0")
     button_one = setup_button("1")
